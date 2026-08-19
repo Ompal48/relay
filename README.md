@@ -65,3 +65,4 @@ No build tools or package manager needed. Either:
 ## Browser support
 
 Uses standard modern CSS (custom properties, `backdrop-filter`, CSS Grid) and JS (`IntersectionObserver`, template literals, `Array.from`). Works in current Chrome, Firefox, Safari, and Edge. No polyfills are included.
+LIVE : https://stirring-dragon-b72386.netlify.app/
