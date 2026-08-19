@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relay — Know before your customers do</title>
+<meta name="description" content="Relay checks your API endpoints every 30 seconds and pages the owner directly the moment a real pattern of failure shows up — not five minutes late, not the whole team.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0F1C'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%233ED98B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap inner">
+    <div class="logo"><span class="logo-dot"></span>relay</div>
+    <div class="nav-links">
+      <a href="#product">Product</a>
+      <a href="#how">How it works</a>
+      <a href="#why">Why Relay</a>
+    </div>
+    <a href="#" class="nav-cta">Start monitoring</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow"><span class="blip"></span> LIVE — 3 endpoints being watched right now</div>
+  <h1>Find out your API is down <span class="accent">before your customers tweet about it.</span></h1>
+  <p class="sub">Relay watches your endpoints every 30 seconds, catches the failure pattern, and pages the right person — not the whole team, not five minutes late.</p>
+  <div class="cta-row">
+    <a href="#" class="btn-primary" onclick="return handleCta(event)">Start monitoring — free →</a>
+    <a href="#product" class="btn-secondary">See it catch an outage ↓</a>
+  </div>
+
+  <div class="incident-card">
+    <div class="incident-head">
+      <div class="left">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">All systems healthy</span>
+      </div>
+      <span class="time mono" id="clockNow">checking every 30s</span>
+    </div>
+    <div class="graph-area">
+      <svg id="pulseSvg" viewBox="0 0 800 150" preserveAspectRatio="none"></svg>
+    </div>
+    <div class="graph-labels mono">
+      <span>-60s</span><span>-45s</span><span>-30s</span><span>-15s</span><span>now</span>
+    </div>
+    <div id="alertBanner">
+      ⚠ <span><b>api.checkout.io/pay</b> — 3 consecutive timeouts detected. Paged on-call in 4s.</span>
+    </div>
+  </div>
+</header>
+
+<section id="product">
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="section-tag">PRODUCT</div>
+      <h2>One list. Every endpoint you're trusting right now.</h2>
+      <p>Status, latency, and trend at a glance — hover a row to see the last hour.</p>
+    </div>
+
+    <div class="dash">
+      <div class="dash-head">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <span class="title mono">monitors — production</span>
+      </div>
+
+      <div class="row">
+        <span class="dot up"></span>
+        <span class="path mono"><span class="method">GET</span>api.yourapp.io/health</span>
+        <span class="latency mono">112ms</span>
+        <svg class="spark" viewBox="0 0 70 24"><polyline points="0,14 10,12 20,15 30,10 40,13 50,9 60,11 70,10" fill="none" stroke="#3ED98B" stroke-width="2"/></svg>
+      </div>
+      <div class="row">
+        <span class="dot up"></span>
+        <span class="path mono"><span class="method">POST</span>api.yourapp.io/auth/token</span>
+        <span class="latency mono">204ms</span>
+        <svg class="spark" viewBox="0 0 70 24"><polyline points="0,16 10,15 20,13 30,14 40,12 50,13 60,10 70,12" fill="none" stroke="#3ED98B" stroke-width="2"/></svg>
+      </div>
+      <div class="row">
+        <span class="dot warn"></span>
+        <span class="path mono"><span class="method">GET</span>api.checkout.io/pay</span>
+        <span class="latency mono">1,840ms</span>
+        <svg class="spark" viewBox="0 0 70 24"><polyline points="0,12 10,13 20,11 30,4 40,18 50,3 60,20 70,5" fill="none" stroke="#FF8A3D" stroke-width="2"/></svg>
+      </div>
+      <div class="row">
+        <span class="dot up"></span>
+        <span class="path mono"><span class="method">GET</span>api.yourapp.io/webhooks/stripe</span>
+        <span class="latency mono">88ms</span>
+        <svg class="spark" viewBox="0 0 70 24"><polyline points="0,13 10,14 20,12 30,13 40,11 50,12 60,10 70,11" fill="none" stroke="#3ED98B" stroke-width="2"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="section-tag">HOW IT WORKS</div>
+      <h2>Three steps, in the order they actually happen.</h2>
+    </div>
+    <div class="process">
+      <div class="proc-item">
+        <div class="proc-num">01 — DETECT</div>
+        <h3>We check, not just ping</h3>
+        <p>Relay hits your real endpoint on your real schedule and checks status code, latency, and response shape — not just "is the server up."</p>
+      </div>
+      <div class="proc-item">
+        <div class="proc-num">02 — CONFIRM</div>
+        <h3>We wait for a pattern</h3>
+        <p>One slow response isn't an incident. Relay waits for a threshold you set — three fails in a row, or latency past your bar — before it does anything.</p>
+      </div>
+      <div class="proc-item">
+        <div class="proc-num">03 — PAGE</div>
+        <h3>We tell the person who owns it</h3>
+        <p>Each endpoint has an owner. Relay pages them directly — SMS, call, or Slack — with the failing endpoint and last-known-good timestamp attached.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="section-tag">WHY TEAMS SWITCH</div>
+      <h2>No made-up numbers. Just what it actually does differently.</h2>
+      <p>We're new. We don't have a logo wall or a case study yet — so here's the honest pitch instead.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <h3>🎯 Pages one person, not a channel</h3>
+        <p>No more #alerts channel everyone mutes. Every monitor has a named owner and an escalation path if they don't respond.</p>
+      </div>
+      <div class="why-item">
+        <h3>⏱️ 30-second checks, not 5-minute ones</h3>
+        <p>Most free monitors check every 5 minutes. A checkout API can lose real money in that window — Relay checks every 30 seconds on every plan, including free.</p>
+      </div>
+      <div class="why-item">
+        <h3>📉 Shows you the shape, not just up/down</h3>
+        <p>Every monitor keeps a rolling latency trend, so you can see an endpoint degrading before it fully fails.</p>
+      </div>
+      <div class="why-item">
+        <h3>🛠️ Built by one person, for now</h3>
+        <p>Relay is early. That means fast fixes and a founder who reads every support email — and also means you should expect some rough edges.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-cta wrap reveal">
+  <h2>Stop finding out from a support ticket.</h2>
+  <p>Free for up to 5 endpoints. No credit card.</p>
+  <div class="cta-row">
+    <a href="#" class="btn-primary" onclick="return handleCta(event)">Start monitoring — free →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap inner">
+    <div class="logo"><span class="logo-dot"></span>relay</div>
+    <span>Built by one person. Bugs go straight to my inbox.</span>
+  </div>
+</footer>
+
+<div id="eggBanner" class="mono">⚡ found it. self-inflicted incident. severity: none. resolved in 3s.</div>
+<div id="toast"><span class="toast-dot"></span><span id="toastText">This is a design submission — signup isn't wired up.</span></div>
+
+<script src="script.js"></script>
+</body>
+</html>
